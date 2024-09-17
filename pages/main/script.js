@@ -69,37 +69,95 @@ const RIGHT_ARROW = document.querySelector('.right_arrow');
 const CAROUSEL = document.querySelector('.carousel');
 const CARDS_LEFT = document.querySelector('#cards_left');
 const CARDS_RIGHT = document.querySelector('#cards_right');
+const CARDS_MIDDLE = document.querySelector('#cards_middle');
 
-const moveLeft = () => {
-    CAROUSEL.classList.add('animation_left');
+const animals = [
+    { name: 'Sophia', img: '../../assets/images/pets-sophia-scaled.png', type: 'Dog', breed: 'Shih tzu' },
+    { name: 'Scarlett', img: '../../assets/images/scarlett.png', type: 'Dog', breed: 'Jack Russell Terrier' },
+    { name: 'Timmy', img: '../../assets/images/timmy.png', type: 'Cat', breed: 'British Shorthair' },
+    { name: 'Katrine', img: '../../assets/images/katrine.png', type: 'Cat', breed: 'British Shorthair' },
+    { name: 'Jennifer', img: '../../assets/images/jennifer.png', type: 'Dog', breed: 'Labrador' },
+    { name: 'Woody', img: '../../assets/images/woody.png', type: 'Dog', breed: 'Golden Retriever' },
+    { name: 'Freddie', img: '../../assets/images/freddie.png', type: 'Cat', breed: 'British Shorthair' },
+    { name: 'Charly', img: '../../assets/images/charly.png', type: 'Dog', breed: 'Jack Russell Terrier' }
+];
+
+const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+};
+
+const createCards = (cardsContainer, animalArray) => {
+    cardsContainer.innerHTML = '';
+    animalArray.forEach(animal => {
+    const card = `
+        <div class="card">
+        <div class="card_content">
+            <img class="card_img" src="${animal.img}" alt="${animal.name}">
+            <h3 class="card-title">${animal.name}</h3>
+            <button class="button more_button" type="submit">Learn more</button>
+        </div>
+        </div>
+    `;
+    cardsContainer.innerHTML += card;
+    });
+};
+
+const getRandomAnimals = (excludeAnimals = [], count = 3) => {
+    let availableAnimals = animals.filter(animal => !excludeAnimals.includes(animal.name));
+    availableAnimals = shuffleArray(availableAnimals);
+    return availableAnimals.slice(0, count);
+};
+
+const updateSlide = (direction) => {
+    const currentAnimals = Array.from(CARDS_MIDDLE.querySelectorAll('.card-title')).map(card => card.innerText);
+    let newAnimals;
+
+    if (direction === 'left') {
+        newAnimals = getRandomAnimals(currentAnimals, getVisibleCardCount());
+        createCards(CARDS_LEFT, newAnimals);
+        CAROUSEL.classList.add('animation_left');
+    } else if (direction === 'right') {
+        newAnimals = getRandomAnimals(currentAnimals, getVisibleCardCount());
+        createCards(CARDS_RIGHT, newAnimals);
+        CAROUSEL.classList.add('animation_right');
+    }
+
     LEFT_ARROW.removeEventListener('click', moveLeft);
     RIGHT_ARROW.removeEventListener('click', moveRight);
 };
 
-const moveRight = () => {
-    CAROUSEL.classList.add('animation_right');
-    RIGHT_ARROW.removeEventListener('click', moveRight);
-    LEFT_ARROW.removeEventListener('click', moveLeft);
-}
-
-LEFT_ARROW.addEventListener('click', moveLeft);
-RIGHT_ARROW.addEventListener('click', moveRight);
+const getVisibleCardCount = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth >= 769) return 3;
+    if (screenWidth >= 414) return 2;
+    return 1;
+};
 
 CAROUSEL.addEventListener('animationend', (animationEvent) => {
     if (animationEvent.animationName === 'move_left') {
         CAROUSEL.classList.remove('animation_left');
         const leftCardsInner = CARDS_LEFT.innerHTML;
-        document.querySelector('#cards_middle').innerHTML = leftCardsInner;
-        
-    } else {
+        CARDS_MIDDLE.innerHTML = leftCardsInner;
+    } else if (animationEvent.animationName === 'move_right') {
         CAROUSEL.classList.remove('animation_right');
         const rightCardsInner = CARDS_RIGHT.innerHTML;
-        document.querySelector("#cards_middle").innerHTML = rightCardsInner;
+        CARDS_MIDDLE.innerHTML = rightCardsInner;
     }
-    
+
     LEFT_ARROW.addEventListener('click', moveLeft);
     RIGHT_ARROW.addEventListener('click', moveRight);
 });
+
+const moveLeft = () => updateSlide('left');
+const moveRight = () => updateSlide('right');
+
+LEFT_ARROW.addEventListener('click', moveLeft);
+RIGHT_ARROW.addEventListener('click', moveRight);
+
+window.onload = () => {
+    const initialAnimals = getRandomAnimals([], getVisibleCardCount());
+    createCards(CARDS_MIDDLE, initialAnimals);
+};
 
 /*
 const json = [

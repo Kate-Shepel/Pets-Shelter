@@ -356,11 +356,13 @@ h1, h2, h3, p {
     border-radius: 50%;
     transform: scale(0.96);
 }
+
 .carousel_wrapper {
     width: 990px;
     overflow: hidden;
     margin: 0 auto;
 }
+
 .carousel {
     display: flex;
     position: relative;
@@ -375,16 +377,7 @@ h1, h2, h3, p {
     flex-direction: row;
     gap: 90px;
 }
-.carousel_wrapper {
-    width: 990px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-.carousel {
-    display: flex;
-    position: relative;
-    left: -990px;
-}
+
 @keyframes move_right {
     from {left: -990px;}
     to {left: -1980px;}
@@ -409,14 +402,7 @@ h1, h2, h3, p {
     padding-bottom: 30px;
     transition: all .2s ease-in-out;
 }
-.card_img_sophia {
-    width: 270px;
-    height: 270px;
-    background-image: url(../../assets/images/sophia.png);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: cover;
-}
+
 .card:hover {
     transform: scale(1.03);
     background: #FFFFFF;
@@ -841,7 +827,7 @@ h1, h2, h3, p {
     max-width: 100%;
     max-height: 100%;
 }
-@media (max-width: 1220px) {
+@media (max-width: 1250px) {
     .header {
         padding: 30px 30px;
     }
@@ -1361,7 +1347,7 @@ h1, h2, h3, p {
     }
     .slider_arrows {
         width: 30%;
-        top: 73%;
+        top: 70%;
         left: 50%;
         transform: translateX(-50%);
     }
@@ -1379,6 +1365,13 @@ h1, h2, h3, p {
         width: 90%;
     }
 }
+
+@media (max-width: 465px) {
+    .slider_arrows {
+        top: 73%;
+    }
+}
+
 @media (max-width: 414px) {
     .popup_content {
         max-width: 240px;
