@@ -35,3 +35,5 @@ In the final stage, I implemented the following interactive features using JavaS
  - A popup modal for viewing more details about the animals on both pages.
  - An infinite slider-carousel on the main page to showcase animals.
  - Pagination on the pets page for navigating through different sets of animals.
+
+[Link to the project](https://kate-shepel.github.io/Pets-Shelter/pages/main/index.html)
