@@ -143,28 +143,43 @@ window.onload = () => {
 
 // popup 
 
-const card = document.querySelectorAll('.card');
-const popup = document.querySelectorAll('.popup');
-const popupCloseButton = document.querySelectorAll('.popup_close_button');
+const cardContainer = document.querySelector('.cards');
+const popups = document.querySelectorAll('.popup');
 const bodySec = document.querySelector('.body');
 
-card.forEach(item => {
-    item.addEventListener('click', () => {
-        bodySec.classList.toggle('body_no_scroll');
-    })
+const openPopup = (animalName) => {
+    const popupToShow = Array.from(popups).find(popup => 
+        popup.querySelector('.card_modal_name').textContent === animalName
+    );
+    if (popupToShow) {
+        popupToShow.classList.add('visible');
+        bodySec.classList.add('body_no_scroll');
+    }
+};
+
+const closePopup = (popup) => {
+    popup.classList.remove('visible');
+    bodySec.classList.remove('body_no_scroll');
+};
+
+cardContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('more_button')) {
+        const card = e.target.closest('.card');
+        const animalName = card.getAttribute('data-name');
+        openPopup(animalName);
+    }
 });
 
-for (let i = 0; i < card.length; i++) {
-    card[i].addEventListener('click', () => {
-        popup[i].classList.toggle('visible');
-    });
-};
+popups.forEach(popup => {
+    const closeButton = popup.querySelector('.popup_close_button');
+    const popupBody = popup.querySelector('.popup_body');
+    closeButton.addEventListener('click', () => closePopup(popup));
 
-for (let i = 0; i < card.length; i++) {
-    popupCloseButton[i].addEventListener('click', () => {
-        popup[i].classList.toggle('visible');
-        bodySec.classList.toggle('body_no_scroll');
+    popup.addEventListener('click', (e) => {
+        if (e.target === popupBody) {
+            closePopup(popup);
+        }
     });
-};
+});
 
 })
