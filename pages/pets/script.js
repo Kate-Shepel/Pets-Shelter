@@ -62,7 +62,7 @@ const createCards = (cardsContainer, animalArray) => {
     cardsContainer.innerHTML = '';
     animalArray.forEach(animal => {
         const card = `
-            <div class="card">
+            <div class="card" data-name="${animal.name}">
             <div class="card_content">
                 <img class="card_img" src="${animal.img}" alt="${animal.name}">
                 <h3 class="card-title">${animal.name}</h3>
